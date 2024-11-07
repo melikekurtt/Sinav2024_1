@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class KarakterKontrol : MonoBehaviour
 {
@@ -31,21 +32,54 @@ public class KarakterKontrol : MonoBehaviour
 
     void Update()
     {
-        // Yazdığınız metodları çağırınız.
+        HareketEt();
+        Zipla();
+
+    }
+
+    void HareketEt()
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            karakterRb.AddForce(UnityEngine.Vector2.left * ( hiz * Time.deltaTime));
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            karakterRb.AddForce(UnityEngine.Vector2.right * (hiz * Time.deltaTime));
+        }
+        else if (Input.GetKey(KeyCode.W))
+        {
+            karakterRb.AddForce(UnityEngine.Vector2.up * (hiz * Time.deltaTime));
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            karakterRb.AddForce(UnityEngine.Vector2.down * (hiz * Time.deltaTime));
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         // Soru 3 ve soru 4 burada çözülecek.
+        if (other.gameObject.CompareTag("Engel"))
+        {
+            Debug.Log("Oyun Biti");
+           
+        }
+        if (other.gameObject.CompareTag("Puan")) 
+        {
+            Destroy(other.gameObject);
+            skor++;
+            metin.text = "skor:" + skor;
+        }
     }
 
     void Zipla()
     {
         // Space tuşuna basınca karakter zıplamalı ancak aşağıdaki kod hatalı.
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-            Vector3 ziplamaYonu = new Vector3(UnityEngine.Random.Range(-1f, 1f), 1, UnityEngine.Random.Range(-1f, 1f));
-            karakterRb.AddForce(ziplamaYonu * (ziplamaGucu / 2), ForceMode2D.Impulse);
+            karakterRb.AddForce(UnityEngine.Vector2.up * (ziplamaGucu * Time.deltaTime));
         }
     }
 }
